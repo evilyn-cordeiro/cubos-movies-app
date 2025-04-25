@@ -13,3 +13,17 @@ model User {
   email    String @unique
   password String
 }
+
+model Movie {
+  id           Int      @id @default(autoincrement())
+  title        String
+  originalTitle String
+  description  String
+  budget       Float
+  releaseDate  DateTime
+  duration     Int
+  genre        String
+  imageUrl     String? // URL da imagem armazenada no S3
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
