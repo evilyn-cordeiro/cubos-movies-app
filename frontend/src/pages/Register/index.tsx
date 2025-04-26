@@ -1,0 +1,155 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Link } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { FormInput } from "../../components/FormInput";
+
+const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleRegister = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!name || !email || !password || !confirmPassword) {
+      enqueueSnackbar("Preencha todos os campos", { variant: "warning" });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      enqueueSnackbar("As senhas não coincidem", { variant: "error" });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      if (response.ok) {
+        enqueueSnackbar("Cadastro realizado com sucesso!", {
+          variant: "success",
+        });
+        navigate("/login");
+      } else {
+        const errorData = await response.json();
+        enqueueSnackbar(errorData.message || "Erro ao cadastrar", {
+          variant: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error);
+      enqueueSnackbar("Erro ao conectar com o servidor.", { variant: "error" });
+    }
+  };
+
+  const isFormValid =
+    name &&
+    email &&
+    password &&
+    confirmPassword &&
+    password === confirmPassword;
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 2,
+        height: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 412,
+          width: "100%",
+          bgcolor: "background.paper",
+          borderRadius: 2,
+          boxShadow: 3,
+          p: "16px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleRegister}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
+          <FormInput
+            label="Nome"
+            placeholder="Digite seu nome"
+            type="text"
+            value={name}
+            name="name"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <FormInput
+            label="E-mail"
+            placeholder="Digite seu e-mail"
+            type="email"
+            value={email}
+            name="email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <FormInput
+            label="Senha"
+            placeholder="Digite sua senha"
+            type="password"
+            name="password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <FormInput
+            label="Confirmar Senha"
+            placeholder="Confirme sua senha"
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            required
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!isFormValid}
+            sx={{ marginTop: 2, minWidth: { sm: 83 } }}
+          >
+            Cadastrar
+          </Button>
+
+          <Link
+            href="/login"
+            underline="hover"
+            variant="body2"
+            textAlign="center"
+            sx={{ marginTop: 1 }}
+          >
+            Já possui conta? Entrar
+          </Link>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default Register;
