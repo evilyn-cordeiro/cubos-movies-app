@@ -6,6 +6,8 @@ import { BackgroundOverlay } from "./components/Background";
 import Layout from "./theme/layout";
 import { Register, Login } from "./pages";
 import { SnackbarProvider } from "notistack";
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
@@ -29,9 +31,14 @@ const App = () => {
             <Route
               element={<Layout darkMode={darkMode} setDarkMode={toggleTheme} />}
             >
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/home" element={<div>home</div>} />
+              <Route element={<PublicRoute restricted={true} />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Route>
+
+              <Route element={<PrivateRoute />}>
+                <Route path="/home" element={<div>Home privada</div>} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
