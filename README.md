@@ -1,1 +1,0 @@
-# cubos-movies-app

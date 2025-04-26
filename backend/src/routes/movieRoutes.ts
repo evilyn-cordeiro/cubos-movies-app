@@ -4,11 +4,14 @@ import {
   addOrEditMovie,
   getMovieDetails,
 } from "../controllers/movieController";
+import { authenticate } from "../middlewares/authenticate";
+import multer from "multer";
 
 const router = Router();
+const upload = multer();
 
-router.get("/", listMovies);
-router.post("/", addOrEditMovie);
-router.get("/:id", getMovieDetails);
+router.get("/", authenticate, listMovies);
+router.post("/", authenticate, upload.single("file"), addOrEditMovie);
+router.get("/:id", authenticate, getMovieDetails);
 
 export default router;

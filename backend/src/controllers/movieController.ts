@@ -11,6 +11,7 @@ declare global {
         mimetype: string;
         buffer: Buffer;
       };
+      userId: number;
     }
   }
 }
@@ -35,12 +36,17 @@ export const listMovies: any = async (
   res: Response
 ): Promise<Response> => {
   const { search, page = 1, duration, startDate, endDate, genre } = req.query;
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Usuário não autenticado." });
+  }
 
   const pageSize = 10;
   const skip = (Number(page) - 1) * pageSize;
 
   try {
-    const filters: any = {};
+    const filters: any = { userId };
 
     if (search) {
       filters.OR = [
@@ -64,7 +70,7 @@ export const listMovies: any = async (
       filters.genre = { contains: String(genre), mode: "insensitive" };
     }
 
-    const movies: any = await prisma.movie.findMany({
+    const movies = await prisma.movie.findMany({
       where: filters,
       skip,
       take: pageSize,
@@ -100,6 +106,10 @@ export const addOrEditMovie: any = async (
 
   const file = req.file;
 
+  if (!req.userId) {
+    return res.status(401).json({ message: "Usuário não autenticado." });
+  }
+
   try {
     let movie;
 
@@ -129,6 +139,7 @@ export const addOrEditMovie: any = async (
           duration,
           genre,
           imageUrl,
+          userId: req.userId, // Associa o filme ao usuário autenticado
         },
       });
     } else {
@@ -142,26 +153,14 @@ export const addOrEditMovie: any = async (
           duration,
           genre,
           imageUrl,
+          userId: req.userId, // Associa o filme ao usuário autenticado
         },
       });
-
-      if (new Date(releaseDate) > new Date()) {
-        const releaseDateObj = new Date(releaseDate);
-        const delay = releaseDateObj.getTime() - Date.now();
-
-        setTimeout(() => {
-          transporter.sendMail({
-            from: process.env.ETHEREAL_USER,
-            to: process.env.NOTIFICATION_EMAIL,
-            subject: `Lançamento do filme: ${title}`,
-            text: `O filme "${title}" será lançado hoje!`,
-          });
-        }, delay);
-      }
     }
 
     return res.status(200).json({ message: "Filme salvo com sucesso!", movie });
   } catch (error) {
+    console.error("Erro ao salvar filme:", error); // Log do erro
     return res.status(500).json({ message: "Erro ao salvar filme.", error });
   }
 };
@@ -171,10 +170,15 @@ export const getMovieDetails: any = async (
   res: Response
 ): Promise<Response> => {
   const { id } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Usuário não autenticado." });
+  }
 
   try {
-    const movie = await prisma.movie.findUnique({
-      where: { id: Number(id) },
+    const movie = await prisma.movie.findFirst({
+      where: { id: Number(id), userId },
     });
 
     if (!movie) {
