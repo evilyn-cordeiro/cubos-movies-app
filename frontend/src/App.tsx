@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme";
 import { BackgroundOverlay } from "./components/Background";
 import Layout from "./theme/layout";
-import { Register, Login } from "./pages";
+import { Register, Login, Movies } from "./pages";
 import { SnackbarProvider } from "notistack";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -37,7 +37,7 @@ const App = () => {
               </Route>
 
               <Route element={<PrivateRoute />}>
-                <Route path="/home" element={<div>Home privada</div>} />
+                <Route path="/movies" element={<Movies />} />
               </Route>
             </Route>
           </Routes>

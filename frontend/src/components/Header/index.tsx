@@ -30,8 +30,10 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Logo />
-      <nav>
+      <div style={{ paddingLeft: "1rem" }}>
+        <Logo />
+      </div>
+      <nav style={{ paddingRight: "1rem" }}>
         <Button
           onClick={setDarkMode}
           variant="contained"

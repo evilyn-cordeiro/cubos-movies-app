@@ -24,7 +24,7 @@ const Login = () => {
         const data = await response.json();
         localStorage.setItem("token", data.token);
         enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
-        navigate("/home");
+        navigate("/movies");
       } else {
         const errorData = await response.json();
         enqueueSnackbar(errorData.message || "Credenciais inválidas", {

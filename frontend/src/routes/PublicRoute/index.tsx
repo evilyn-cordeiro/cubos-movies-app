@@ -8,7 +8,7 @@ const PublicRoute = ({ restricted = false }: PublicRouteProps) => {
   const isAuthenticated = !!localStorage.getItem("token");
 
   if (isAuthenticated && restricted) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/movies" replace />;
   }
 
   return <Outlet />;
