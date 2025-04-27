@@ -78,7 +78,7 @@ export const darkTheme = createTheme({
           position: "relative",
           backgroundColor: "#1A191B",
           border: "1px solid",
-          borderColor: "#6F6D78",
+          borderColor: "#49474E",
           fontSize: 16,
           height: "44px",
           padding: "10px 12px",
@@ -100,7 +100,6 @@ export const darkTheme = createTheme({
         }),
         input: {
           fontFamily: "'Inter', sans-serif",
-          color: "#EEEEEE",
           "&::placeholder": {
             color: "#6F6D78",
             opacity: 1,
@@ -157,7 +156,7 @@ export const lightTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "8px",
+          borderRadius: "4px",
           textTransform: "none",
           height: "44px",
         },
@@ -229,6 +228,7 @@ export const lightTheme = createTheme({
         },
       },
     },
+
     MuiInputLabel: {
       styleOverrides: {
         root: {

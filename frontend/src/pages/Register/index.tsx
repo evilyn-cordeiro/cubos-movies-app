@@ -63,8 +63,8 @@ const Register = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: 2,
-        height: "100vh",
+        padding: 1,
+        width: "100%",
       }}
     >
       <Box
@@ -120,7 +120,7 @@ const Register = () => {
 
           <FormInput
             label="Confirmar Senha"
-            placeholder="Confirme sua senha"
+            placeholder="Digite sua senha novamente"
             type="password"
             name="confirmPassword"
             value={confirmPassword}

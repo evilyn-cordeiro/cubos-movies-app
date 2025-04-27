@@ -10,19 +10,16 @@ interface LayoutProps {
 
 export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-      }}
-    >
+    <Box display="flex" flexDirection="column" minHeight="100vh">
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-
-      <Box>
+      <Box
+        flexGrow={1}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Outlet />
       </Box>
-
       <Footer />
     </Box>
   );

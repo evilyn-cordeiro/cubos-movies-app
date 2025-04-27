@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme";
 import { BackgroundOverlay } from "./components/Background";
@@ -28,6 +28,7 @@ const App = () => {
         <BrowserRouter>
           <BackgroundOverlay />
           <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route
               element={<Layout darkMode={darkMode} setDarkMode={toggleTheme} />}
             >

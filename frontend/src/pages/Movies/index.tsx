@@ -12,7 +12,7 @@ interface Movie {
   releaseDate: string;
   duration: number;
   genre: string;
-  imageUrl: string | null;
+  imageUrl: string | undefined;
   userId: number;
   createdAt: string;
   updatedAt: string;
@@ -31,12 +31,12 @@ const Movies = () => {
   const [page, setPage] = useState(1);
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (pageNumber: number) => {
     const token = localStorage.getItem("token");
 
     try {
       const response = await fetch(
-        `http://localhost:3000/movies?page=${page}`,
+        `http://localhost:3000/movies?page=${pageNumber}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -56,9 +56,8 @@ const Movies = () => {
       console.error("Erro ao buscar filmes:", error);
     }
   };
-
   useEffect(() => {
-    fetchMovies();
+    fetchMovies(page);
   }, [page]);
 
   return (
@@ -71,11 +70,13 @@ const Movies = () => {
         setPage={setPage}
         onAddMovieClick={() => setOpenDrawer(true)}
       />
+
       <AddMovieDrawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onMovieAdded={() => {
-          fetchMovies();
+          fetchMovies(1);
+          setPage(1);
           setOpenDrawer(false);
         }}
       />

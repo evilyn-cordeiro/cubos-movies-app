@@ -28,6 +28,7 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
       style={{
         color: theme.palette.text.primary,
         borderBottom: `1px solid ${theme.palette.divider}`,
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       <div style={{ paddingLeft: "1rem" }}>

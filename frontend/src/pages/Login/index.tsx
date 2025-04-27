@@ -43,8 +43,8 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: 2,
-        height: "100vh",
+        padding: 1,
+        width: "100%",
       }}
     >
       <Box
