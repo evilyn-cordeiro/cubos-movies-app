@@ -18,6 +18,9 @@ const commonPalette = {
     paper: "#232225",
     default: "#1A191B",
   },
+  icon: {
+    main: "#EEEEEE",
+  },
 };
 
 export const darkTheme = createTheme({
@@ -180,6 +183,14 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: "#000 !important",
+        },
+      },
+    },
+
     MuiLink: {
       styleOverrides: {
         root: {

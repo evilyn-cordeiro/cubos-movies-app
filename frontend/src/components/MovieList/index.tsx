@@ -1,7 +1,17 @@
-import { useTheme } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  Button,
+  Modal,
+  Pagination,
+  InputBase,
+  Typography,
+  Skeleton,
+} from "@mui/material";
 import { useState } from "react";
 import MovieCard from "../MovieCard";
-import { Box, Button, Modal, Pagination, InputBase } from "@mui/material";
+import MovieCreationIcon from "@mui/icons-material/MovieCreation";
+import { SearchIcon } from "../Icons";
 
 interface Movie {
   id: number;
@@ -25,6 +35,7 @@ interface MovieListProps {
   page: number;
   setPage: (value: number) => void;
   onAddMovieClick: () => void;
+  totalPages: number;
 }
 
 const MovieList = ({
@@ -34,23 +45,16 @@ const MovieList = ({
   page,
   setPage,
   onAddMovieClick,
+  totalPages,
 }: MovieListProps) => {
   const theme = useTheme();
   const [openFilter, setOpenFilter] = useState(false);
-  const itemsPerPage = 10;
-
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const paginatedMovies = filteredMovies.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
 
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  const isLoading = false;
 
   return (
     <Box
@@ -83,28 +87,7 @@ const MovieList = ({
             alignItems: "center",
             flexGrow: 1,
           }}
-          endAdornment={
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11 18C14.866 18 18 14.866 18 11C18 7.13401 14.866 4 11 4C7.13401 4 4 7.13401 4 11C4 14.866 7.13401 18 11 18ZM11 6C10.3434 6 9.69321 6.12933 9.08658 6.3806C8.47995 6.63188 7.92876 7.00017 7.46447 7.46447C7.00017 7.92876 6.63188 8.47996 6.3806 9.08658C6.12933 9.69321 6 10.3434 6 11C6 11.5523 6.44772 12 7 12C7.55228 12 8 11.5523 8 11C8 10.606 8.0776 10.2159 8.22836 9.85195C8.37913 9.48797 8.6001 9.15726 8.87868 8.87868C9.15726 8.6001 9.48797 8.37913 9.85195 8.22836C10.2159 8.0776 10.606 8 11 8C11.5523 8 12 7.55228 12 7C12 6.44772 11.5523 6 11 6Z"
-                fill={theme.palette.text.primary}
-              />
-              <path
-                d="M20 20L18 18"
-                stroke={theme.palette.text.primary}
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-          }
+          endAdornment={<SearchIcon />}
         />
 
         <Box
@@ -131,9 +114,7 @@ const MovieList = ({
 
           <Button
             variant="contained"
-            sx={{
-              width: { xs: "242.93px", sm: "151px" },
-            }}
+            sx={{ width: { xs: "242.93px", sm: "151px" } }}
             onClick={onAddMovieClick}
           >
             Adicionar Filme
@@ -160,34 +141,82 @@ const MovieList = ({
           },
         })}
       >
-        {paginatedMovies.map((movie) => (
-          <Box key={movie.id} display="flex" justifyContent="center">
-            <MovieCard
-              title={movie.title}
-              genres={movie.genre}
-              posterUrl={movie.imageUrl}
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, idx) => (
+            <Skeleton
+              key={idx}
+              variant="rectangular"
+              height={300}
+              sx={{ borderRadius: 2 }}
             />
+          ))
+        ) : movies.length === 0 ? (
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            py={8}
+            textAlign="center"
+          >
+            <MovieCreationIcon
+              sx={{
+                fontSize: 64,
+                mb: 2,
+              }}
+            />
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "rgba(255, 255, 255, 0.87)" }}
+            >
+              Nenhum filme encontrado
+            </Typography>
+            <Typography
+              variant="body2"
+              mb={2}
+              sx={{ color: "rgba(255, 255, 255, 0.87)" }}
+            >
+              Não há filmes para listar. Que tal adicionar um novo?
+            </Typography>
           </Box>
-        ))}
+        ) : (
+          movies.map((movie) => (
+            <Box key={movie.id} display="flex" justifyContent="center">
+              <MovieCard
+                title={movie.title}
+                genres={movie.genre}
+                posterUrl={movie.imageUrl}
+              />
+            </Box>
+          ))
+        )}
       </Box>
 
-      {/* Paginação */}
-      <Box display="flex" justifyContent="center" mt={4} marginBottom={4}>
-        <Pagination
-          count={Math.ceil(filteredMovies.length / itemsPerPage)}
-          page={page}
-          onChange={handleChangePage}
-          sx={{
-            "& .MuiPaginationItem-root": {
-              width: 50,
-              height: 50,
-              borderRadius: 1,
-            },
-          }}
-        />
-      </Box>
+      {totalPages > 1 && (
+        <Box display="flex" justifyContent="center" mt={4} mb={4}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handleChangePage}
+            sx={{
+              "& .MuiPaginationItem-root": {
+                width: 50,
+                height: 50,
+                borderRadius: 1,
+                backgroundColor: theme.palette.primary.main,
+                "&.Mui-selected": {
+                  backgroundColor: theme.palette.background.paper,
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: theme.palette.action.disabledBackground,
+                },
+              },
+            }}
+          />
+        </Box>
+      )}
 
-      {/* Modal de Filtros */}
       <Modal open={openFilter} onClose={() => setOpenFilter(false)}>
         <Box
           sx={{
@@ -208,4 +237,5 @@ const MovieList = ({
     </Box>
   );
 };
+
 export default MovieList;

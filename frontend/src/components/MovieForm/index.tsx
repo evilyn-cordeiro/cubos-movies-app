@@ -1,9 +1,11 @@
-import { Box, Button, IconButton, Typography, TextField } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import FormInput from "../FormInput";
+import { useSnackbar } from "notistack";
 
 // Validação com Yup
 const schema = Yup.object().shape({
@@ -20,6 +22,7 @@ const schema = Yup.object().shape({
     .required("Duração é obrigatória")
     .min(1, "Duração mínima é 1 minuto"),
   genre: Yup.string().required("Gênero é obrigatório"),
+  imageUrl: Yup.mixed().required("Imagem é obrigatória"),
 });
 
 interface AddMovieDrawerProps {
@@ -33,39 +36,67 @@ export const AddMovieDrawer = ({
   onClose,
   onMovieAdded,
 }: AddMovieDrawerProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
+    reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
-
   const onSubmit = async (data: object) => {
     const token = localStorage.getItem("token");
+    console.log(data);
 
     try {
-      await fetch("http://localhost:3000/movies", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "imageUrl" && value instanceof File) {
+          formData.append(key, value); // Adiciona o arquivo corretamente
+        } else {
+          formData.append(key, value as string | Blob);
+        }
       });
 
-      onClose(); // Fecha o modal
-      onMovieAdded(); // Atualiza a lista
+      const response = await fetch("http://localhost:3000/movies", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao adicionar filme");
+      }
+
+      enqueueSnackbar("Filme adicionado com sucesso!", { variant: "success" });
+      onClose();
+      onMovieAdded();
+      reset();
     } catch (error) {
       console.error("Erro ao adicionar filme:", error);
+      enqueueSnackbar("Erro ao adicionar filme. Tente novamente.", {
+        variant: "error",
+      });
+      onClose();
+      reset();
     }
+  };
+
+  const handleClose = () => {
+    reset();
+    onClose();
   };
 
   return (
     <AnimatePresence>
       {open && (
         <>
-          {/* Fundo escuro */}
           <Box
             component={motion.div}
             initial={{ opacity: 0 }}
@@ -78,7 +109,7 @@ export const AddMovieDrawer = ({
             height="100vh"
             bgcolor="rgba(0,0,0,0.5)"
             zIndex={1200}
-            onClick={onClose}
+            onClick={handleClose}
             sx={{
               backdropFilter: "blur(5px)",
             }}
@@ -94,7 +125,7 @@ export const AddMovieDrawer = ({
             top={0}
             right={0}
             height="100vh"
-            width={{ xs: "100%", sm: "600px" }}
+            width={{ sm: "600px" }}
             bgcolor="background.paper"
             zIndex={1300}
             display="flex"
@@ -110,123 +141,163 @@ export const AddMovieDrawer = ({
               alignItems="center"
               mb={4}
             >
-              <Typography variant="h5">Adicionar Filme</Typography>
-              <IconButton onClick={onClose}>
-                <CloseIcon />
+              <Typography variant="h5" color={"textPrimary"}>
+                Adicionar Filme
+              </Typography>
+              <IconButton onClick={handleClose}>
+                <CloseIcon color={"primary"} />
               </IconButton>
             </Box>
 
             {/* Formulário */}
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Box display="flex" flexDirection="column" gap={2} flex={1}>
-                <Controller
-                  name="title"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Título"
-                      fullWidth
-                      error={!!errors.title}
-                      helperText={errors.title?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="originalTitle"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Título Original"
-                      fullWidth
-                      error={!!errors.originalTitle}
-                      helperText={errors.originalTitle?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Descrição"
-                      fullWidth
-                      multiline
-                      rows={4}
-                      error={!!errors.description}
-                      helperText={errors.description?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="budget"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Orçamento"
-                      fullWidth
-                      type="number"
-                      error={!!errors.budget}
-                      helperText={errors.budget?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="releaseDate"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Data de Lançamento"
-                      fullWidth
-                      type="date"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      error={!!errors.releaseDate}
-                      helperText={errors.releaseDate?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="duration"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Duração (minutos)"
-                      fullWidth
-                      type="number"
-                      error={!!errors.duration}
-                      helperText={errors.duration?.message}
-                    />
-                  )}
-                />
-                <Controller
-                  name="genre"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Gênero"
-                      fullWidth
-                      error={!!errors.genre}
-                      helperText={errors.genre?.message}
-                    />
-                  )}
-                />
-              </Box>
+              <Box display="flex" flexDirection="column" gap={2}>
+                <Box display="flex" flexDirection="column" gap={2}>
+                  <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Título"
+                        required
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        errorMessage={errors.title?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="originalTitle"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Título Original"
+                        required
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        errorMessage={errors.originalTitle?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Descrição"
+                        type="multiline"
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        errorMessage={errors.description?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="budget"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Orçamento"
+                        required
+                        type="number"
+                        name={field.name}
+                        value={String(field.value || "")}
+                        onChange={field.onChange}
+                        errorMessage={errors.budget?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="releaseDate"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Data de Lançamento"
+                        required
+                        type="date"
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        errorMessage={errors.releaseDate?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="duration"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Duração (minutos)"
+                        required
+                        type="number"
+                        name={field.name}
+                        value={String(field.value || "")}
+                        onChange={field.onChange}
+                        errorMessage={errors.duration?.message}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="genre"
+                    control={control}
+                    render={({ field }) => (
+                      <FormInput
+                        label="Gênero"
+                        required
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        errorMessage={errors.genre?.message}
+                      />
+                    )}
+                  />
+                </Box>
 
-              <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                <Button variant="outlined" onClick={onClose}>
-                  Cancelar
-                </Button>
-                <Button variant="contained" type="submit">
-                  Adicionar
-                </Button>
+                <Box>
+                  <Typography variant="body2" fontWeight={500} gutterBottom>
+                    Imagem do Filme
+                  </Typography>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setValue("imageUrl", file, { shouldValidate: true });
+                      }
+                    }}
+                  />
+                  {errors.imageUrl && (
+                    <Typography
+                      variant="caption"
+                      color="error"
+                      sx={{ mt: 0.5, display: "block" }}
+                    >
+                      {errors.imageUrl.message as string}
+                    </Typography>
+                  )}
+                </Box>
+
+                <Box display="flex" justifyContent="flex-end" gap={1} pt={2}>
+                  <Button
+                    variant="outlined"
+                    onClick={handleClose}
+                    sx={{ width: "103px" }}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ width: "151px" }}
+                    disabled={!isValid}
+                  >
+                    Adicionar
+                  </Button>
+                </Box>
               </Box>
             </form>
           </Box>

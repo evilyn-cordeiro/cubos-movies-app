@@ -1,4 +1,3 @@
-// Movies.tsx
 import { useState, useEffect } from "react";
 import { AddMovieDrawer } from "../../components/MovieForm";
 import { MovieList } from "../../components";
@@ -30,13 +29,14 @@ const Movies = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const fetchMovies = async (pageNumber: number) => {
+  const fetchMovies = async (pageNumber: number, searchQuery: string) => {
     const token = localStorage.getItem("token");
 
     try {
       const response = await fetch(
-        `http://localhost:3000/movies?page=${pageNumber}`,
+        `http://localhost:3000/movies?page=${pageNumber}&search=${searchQuery}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,13 +52,15 @@ const Movies = () => {
 
       const data: MoviesResponse = await response.json();
       setMovies(data.movies);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Erro ao buscar filmes:", error);
     }
   };
+
   useEffect(() => {
-    fetchMovies(page);
-  }, [page]);
+    fetchMovies(page, search);
+  }, [page, search]);
 
   return (
     <>
@@ -69,13 +71,14 @@ const Movies = () => {
         page={page}
         setPage={setPage}
         onAddMovieClick={() => setOpenDrawer(true)}
+        totalPages={totalPages}
       />
 
       <AddMovieDrawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         onMovieAdded={() => {
-          fetchMovies(1);
+          fetchMovies(1, search);
           setPage(1);
           setOpenDrawer(false);
         }}
