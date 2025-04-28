@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, useTheme } from "@mui/material";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -12,6 +12,7 @@ interface HeaderProps {
 export default function Header({ darkMode, setDarkMode }: HeaderProps) {
   const theme = useTheme();
   const isAuthenticated = !!localStorage.getItem("token");
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -20,7 +21,11 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
   };
 
   const handleNavigateToRegister = () => {
-    navigate("/register");
+    if (location.pathname === "/register") {
+      navigate("/login");
+    } else {
+      navigate("/register");
+    }
   };
 
   return (
@@ -56,7 +61,7 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
           </Button>
         ) : (
           <Button variant="contained" onClick={handleNavigateToRegister}>
-            Cadastrar-se
+            {location.pathname === "/register" ? "Login" : "Cadastrar-se"}
           </Button>
         )}
       </nav>
