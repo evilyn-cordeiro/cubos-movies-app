@@ -145,7 +145,7 @@ export const AddMovieDrawer = ({
                 Adicionar Filme
               </Typography>
               <IconButton onClick={handleClose}>
-                <CloseIcon color={"primary"} />
+                <CloseIcon />
               </IconButton>
             </Box>
 

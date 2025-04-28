@@ -5,13 +5,13 @@ import {
   Modal,
   Pagination,
   InputBase,
-  Typography,
   Skeleton,
 } from "@mui/material";
 import { useState } from "react";
 import MovieCard from "../MovieCard";
-import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import { SearchIcon } from "../Icons";
+import NotFile from "../NotFile";
+import FilterModal from "../FIlterModal";
 
 interface Movie {
   id: number;
@@ -36,22 +36,59 @@ interface MovieListProps {
   setPage: (value: number) => void;
   onAddMovieClick: () => void;
   totalPages: number;
+  onFiltersApply: (filters: Filters) => void;
+}
+
+interface Filters {
+  minDuration: string;
+  maxDuration: string;
+  startDate: string;
+  endDate: string;
 }
 
 const MovieList = ({
   movies,
   search,
-  setSearch,
   page,
+  setSearch,
   setPage,
   onAddMovieClick,
   totalPages,
+  onFiltersApply,
 }: MovieListProps) => {
   const theme = useTheme();
   const [openFilter, setOpenFilter] = useState(false);
 
+  const [filters, setFilters] = useState<Filters>({
+    minDuration: "",
+    maxDuration: "",
+    startDate: "",
+    endDate: "",
+  });
+
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+
+  const handleFilterChange = (field: keyof Filters, value: string) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleClearFilters = () => {
+    const cleared = {
+      minDuration: "",
+      maxDuration: "",
+      startDate: "",
+      endDate: "",
+    };
+    setFilters(cleared);
+    onFiltersApply(cleared);
+    setOpenFilter(false);
+  };
+
+  const handleApplyFilters = () => {
+    onFiltersApply(filters);
+    setOpenFilter(false);
   };
 
   const isLoading = false;
@@ -59,13 +96,14 @@ const MovieList = ({
   return (
     <Box
       sx={{
-        mt: 15,
+        mt: 12,
         minHeight: "500px",
         width: "100%",
         maxWidth: "1366px",
         padding: "16px",
       }}
     >
+      {/* Top controls */}
       <Box
         display="flex"
         justifyContent={{ xs: "center", sm: "flex-end" }}
@@ -81,7 +119,6 @@ const MovieList = ({
             maxWidth: { xs: "100%", sm: "488px" },
             px: 2,
             py: 1,
-            border: "1px solid #49474E",
             borderRadius: 1,
             display: "flex",
             alignItems: "center",
@@ -122,76 +159,80 @@ const MovieList = ({
         </Box>
       </Box>
 
-      <Box
-        sx={(theme) => ({
-          display: "grid",
-          gap: "8px",
-          rowGap: "16px",
-          backgroundColor:
-            theme.palette.mode === "dark"
-              ? "rgba(255, 255, 255, 0.08)"
-              : "rgba(0, 0, 0, 0.238)",
-          padding: { sm: "24px", xs: "16px" },
-          borderRadius: "4px",
-          minHeight: "500px",
-          gridTemplateColumns: "repeat(auto-fit, minmax(235px, 1fr))",
-
-          [theme.breakpoints.down(730)]: {
-            gridTemplateColumns: "repeat(auto-fit, minmax(183px, 1fr))",
-          },
-        })}
-      >
-        {isLoading ? (
-          Array.from({ length: 6 }).map((_, idx) => (
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "grid",
+            gap: "8px",
+            rowGap: "16px",
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(255, 255, 255, 0.08)"
+                : "rgba(0, 0, 0, 0.238)",
+            padding: { sm: "24px", xs: "16px" },
+            borderRadius: "4px",
+            minHeight: "500px",
+            gridTemplateColumns: "repeat(auto-fill, minmax(235px, 1fr))",
+            [theme.breakpoints.down(600)]: {
+              gridTemplateColumns: "repeat(auto-fill, minmax(183px, 1fr))",
+            },
+          }}
+        >
+          {Array.from({ length: 6 }).map((_, idx) => (
             <Skeleton
               key={idx}
               variant="rectangular"
               height={300}
               sx={{ borderRadius: 2 }}
             />
-          ))
-        ) : movies.length === 0 ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            py={8}
-            textAlign="center"
-          >
-            <MovieCreationIcon
-              sx={{
-                fontSize: 64,
-                mb: 2,
-              }}
+          ))}
+        </Box>
+      ) : movies.length === 0 ? (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          minHeight="400px"
+          sx={{
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(255, 255, 255, 0.08)"
+                : "rgba(101, 101, 101, 0.238)",
+            borderRadius: "4px",
+            mt: 3,
+          }}
+        >
+          <NotFile />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "grid",
+            gap: "8px",
+            rowGap: "16px",
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(255, 255, 255, 0.08)"
+                : "rgba(101, 101, 101, 0.238)",
+            padding: { sm: "24px", xs: "16px" },
+            borderRadius: "4px",
+            minHeight: "500px",
+            gridTemplateColumns: "repeat(auto-fill, minmax(235px, 1fr))",
+            [theme.breakpoints.down(600)]: {
+              gridTemplateColumns: "repeat(auto-fill, minmax(183px, 1fr))",
+            },
+          }}
+        >
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              title={movie.title}
+              genres={movie.genre}
+              posterUrl={movie.imageUrl}
             />
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{ color: "rgba(255, 255, 255, 0.87)" }}
-            >
-              Nenhum filme encontrado
-            </Typography>
-            <Typography
-              variant="body2"
-              mb={2}
-              sx={{ color: "rgba(255, 255, 255, 0.87)" }}
-            >
-              Não há filmes para listar. Que tal adicionar um novo?
-            </Typography>
-          </Box>
-        ) : (
-          movies.map((movie) => (
-            <Box key={movie.id} display="flex" justifyContent="center">
-              <MovieCard
-                title={movie.title}
-                genres={movie.genre}
-                posterUrl={movie.imageUrl}
-              />
-            </Box>
-          ))
-        )}
-      </Box>
+          ))}
+        </Box>
+      )}
 
       {totalPages > 1 && (
         <Box display="flex" justifyContent="center" mt={4} mb={4}>
@@ -205,8 +246,10 @@ const MovieList = ({
                 height: 50,
                 borderRadius: 1,
                 backgroundColor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
                 "&.Mui-selected": {
                   backgroundColor: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
                 },
                 "&.Mui-disabled": {
                   backgroundColor: theme.palette.action.disabledBackground,
@@ -218,21 +261,12 @@ const MovieList = ({
       )}
 
       <Modal open={openFilter} onClose={() => setOpenFilter(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "background.paper",
-            p: 4,
-            borderRadius: 2,
-            boxShadow: 24,
-          }}
-        >
-          Filtro aqui!
-        </Box>
+        <FilterModal
+          filters={filters}
+          onChange={handleFilterChange}
+          onClear={handleClearFilters}
+          onApply={handleApplyFilters}
+        />
       </Modal>
     </Box>
   );

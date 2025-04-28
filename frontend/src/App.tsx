@@ -1,13 +1,17 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import { darkTheme, lightTheme } from "./theme";
-import Layout from "./theme/layout";
-import { Register, Login, Movies, NotFoundPage } from "./pages";
+import { useState } from "react";
+//notistack(notification)
 import { SnackbarProvider } from "notistack";
+//routes
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+//pages
+import { Register, Login, Movies, NotFoundPage } from "./pages";
 import { BackgroundOverlay } from "./components";
+//layout
+import Layout from "./theme/layout";
+import { darkTheme, lightTheme } from "./theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
@@ -20,6 +24,7 @@ const App = () => {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <SnackbarProvider
         maxSnack={3}
+        autoHideDuration={2000}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",

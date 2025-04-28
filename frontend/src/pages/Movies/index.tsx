@@ -30,19 +30,41 @@ const Movies = () => {
   const [page, setPage] = useState(1);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const [filters, setFilters] = useState({
+    minDuration: "",
+    maxDuration: "",
+    startDate: "",
+    endDate: "",
+  });
 
-  const fetchMovies = async (pageNumber: number, searchQuery: string) => {
+  const handleFiltersApply = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    setPage(1);
+    fetchMovies(1, search, newFilters);
+  };
+
+  const fetchMovies = async (
+    pageNumber: number,
+    searchQuery: string,
+    appliedFilters = filters
+  ) => {
     const token = localStorage.getItem("token");
 
+    const params = new URLSearchParams({
+      page: pageNumber.toString(),
+      search: searchQuery,
+      minDuration: appliedFilters.minDuration,
+      maxDuration: appliedFilters.maxDuration,
+      startDate: appliedFilters.startDate,
+      endDate: appliedFilters.endDate,
+    });
+
     try {
-      const response = await fetch(
-        `http://localhost:3000/movies?page=${pageNumber}&search=${searchQuery}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:3000/movies?${params}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.status === 401) {
         localStorage.removeItem("token");
@@ -59,8 +81,8 @@ const Movies = () => {
   };
 
   useEffect(() => {
-    fetchMovies(page, search);
-  }, [page, search]);
+    fetchMovies(page, search, filters);
+  }, [page, search, filters]);
 
   return (
     <>
@@ -72,6 +94,7 @@ const Movies = () => {
         setPage={setPage}
         onAddMovieClick={() => setOpenDrawer(true)}
         totalPages={totalPages}
+        onFiltersApply={handleFiltersApply}
       />
 
       <AddMovieDrawer

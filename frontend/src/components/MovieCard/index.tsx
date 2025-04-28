@@ -11,7 +11,7 @@ const MovieCard = ({ title, genres, posterUrl }: MovieCardProps) => {
     <Box
       sx={(theme) => ({
         width: "235px",
-        height: "355px",
+        maxHeight: "355px",
         position: "relative",
         borderRadius: "4px",
         overflow: "hidden",

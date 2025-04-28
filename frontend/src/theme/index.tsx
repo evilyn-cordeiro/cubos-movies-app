@@ -18,9 +18,6 @@ const commonPalette = {
     paper: "#232225",
     default: "#1A191B",
   },
-  icon: {
-    main: "#EEEEEE",
-  },
 };
 
 export const darkTheme = createTheme({
@@ -135,14 +132,14 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#8E4EC6",
+      main: "#8145B5",
     },
     secondary: {
       main: "rgba(183, 68, 247, 0.5)",
     },
     text: {
-      primary: "#232225",
-      secondary: "#49474E",
+      primary: "#211F26",
+      secondary: "#65636D",
     },
     background: {
       default: "#EBEAF8",
@@ -164,10 +161,10 @@ export const lightTheme = createTheme({
           height: "44px",
         },
         containedPrimary: {
-          backgroundColor: "#8E4EC6",
+          backgroundColor: "#8145B5",
           color: "#FFFFFF",
           "&:hover": {
-            backgroundColor: "#9A5CD0",
+            backgroundColor: "#52009A",
           },
           "&:disabled": {
             backgroundColor: "#6F6D78",
@@ -175,7 +172,7 @@ export const lightTheme = createTheme({
           },
         },
         outlinedPrimary: {
-          background: "rgba(183, 68, 247, 8)",
+          background: "#5C00AD",
           color: "rgba(241, 221, 255, 98)",
           "&:hover": {
             backgroundColor: "rgba(183, 68, 247, 0.08)",
@@ -183,14 +180,6 @@ export const lightTheme = createTheme({
         },
       },
     },
-    MuiSvgIcon: {
-      styleOverrides: {
-        root: {
-          color: "#000 !important",
-        },
-      },
-    },
-
     MuiLink: {
       styleOverrides: {
         root: {
@@ -207,9 +196,9 @@ export const lightTheme = createTheme({
         root: ({ theme }) => ({
           borderRadius: 4,
           position: "relative",
-          backgroundColor: "#F3F6F9",
+          backgroundColor: "#F2EFF3",
           border: "1px solid",
-          borderColor: "#E0E3E7",
+          borderColor: "#E3DFE6",
           fontSize: 16,
           height: "44px",
           padding: "10px 12px",
@@ -231,15 +220,14 @@ export const lightTheme = createTheme({
         }),
         input: {
           fontFamily: "'Inter', sans-serif",
-          color: "#232225",
+          color: "#211F26",
           "&::placeholder": {
-            color: "#49474E",
+            color: "#84828E",
             opacity: 1,
           },
         },
       },
     },
-
     MuiInputLabel: {
       styleOverrides: {
         root: {
