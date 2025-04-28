@@ -18,17 +18,26 @@ model User {
 }
 
 model Movie {
-  id           Int      @id @default(autoincrement())
-  title        String   @db.VarChar(100)
+  id            Int      @id @default(autoincrement())
+  title         String   @db.VarChar(100)
   originalTitle String   @db.VarChar(100)
-  description  String   @db.VarChar(500)
-  budget       Float
-  releaseDate  DateTime
-  duration     Int
-  genre        String   @db.VarChar(50)
-  imageUrl     String?  @db.VarChar(255)
-  userId       Int
-  user         User     @relation(fields: [userId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  description   String   @db.VarChar(500)
+  tagline       String?  @db.VarChar(100)
+  budget        Float
+  revenue       Float
+  profit        Float   
+  popularity    Float
+  voteCount     Int
+  language      String   @db.VarChar(50)
+  status        String   @db.VarChar(50)
+  releaseDate   DateTime
+  duration      Int
+  genre         String   @db.VarChar(100)
+  youtubeUrl    String?  @db.VarChar(255)
+  imageUrl      String?  @db.VarChar(255)
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  successRate Float
 }

@@ -7,6 +7,7 @@ import MovieList from "./MovieList";
 import Logo from "./Logo";
 import Movie from "./MovieCard";
 import NotFile from "./NotFile";
+import FormSelect from "./FormSelect";
 
 export {
   BackgroundOverlay,
@@ -18,4 +19,5 @@ export {
   Logo,
   NotFile,
   Movie,
+  FormSelect,
 };

@@ -22,6 +22,7 @@ interface Movie {
   releaseDate: string;
   duration: number;
   genre: string;
+  popularity?: number;
   imageUrl?: string;
   userId: number;
   createdAt: string;
@@ -96,14 +97,13 @@ const MovieList = ({
   return (
     <Box
       sx={{
-        mt: 12,
+        mt: 10,
         minHeight: "500px",
         width: "100%",
         maxWidth: "1366px",
         padding: "16px",
       }}
     >
-      {/* Top controls */}
       <Box
         display="flex"
         justifyContent={{ xs: "center", sm: "flex-end" }}
@@ -178,13 +178,33 @@ const MovieList = ({
             },
           }}
         >
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <Skeleton
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <Box
               key={idx}
-              variant="rectangular"
-              height={300}
-              sx={{ borderRadius: 2 }}
-            />
+              sx={(theme) => ({
+                width: { xs: "100%", sm: "235px" },
+                height: "100%",
+                maxHeight: "355px",
+                borderRadius: "4px",
+                overflow: "hidden",
+                bgcolor: "background.paper",
+                mx: "auto",
+                [theme.breakpoints.down("sm")]: {
+                  width: "183px",
+                  height: "281px",
+                },
+              })}
+            >
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "4px",
+                }}
+              />
+            </Box>
           ))}
         </Box>
       ) : movies.length === 0 ? (
@@ -209,7 +229,7 @@ const MovieList = ({
           sx={{
             display: "grid",
             gap: "8px",
-            rowGap: "16px",
+            rowGap: { sm: "24px", xs: "16px" },
             backgroundColor:
               theme.palette.mode === "dark"
                 ? "rgba(255, 255, 255, 0.08)"
@@ -218,7 +238,7 @@ const MovieList = ({
             borderRadius: "4px",
             minHeight: "500px",
             gridTemplateColumns: "repeat(auto-fill, minmax(235px, 1fr))",
-            [theme.breakpoints.down(600)]: {
+            [theme.breakpoints.down(414)]: {
               gridTemplateColumns: "repeat(auto-fill, minmax(183px, 1fr))",
             },
           }}
@@ -226,8 +246,10 @@ const MovieList = ({
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
+              id={movie.id}
               title={movie.title}
-              genres={movie.genre}
+              genre={movie.genre}
+              popularity={movie.popularity}
               posterUrl={movie.imageUrl}
             />
           ))}

@@ -5,8 +5,8 @@ import { useSnackbar } from "notistack";
 import { FormInput } from "../../components";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 

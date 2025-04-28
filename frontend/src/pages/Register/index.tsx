@@ -5,10 +5,10 @@ import { useSnackbar } from "notistack";
 import { FormInput } from "../../components";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();

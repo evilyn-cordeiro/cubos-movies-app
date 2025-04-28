@@ -6,7 +6,13 @@ import { SnackbarProvider } from "notistack";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 //pages
-import { Register, Login, Movies, NotFoundPage } from "./pages";
+import {
+  Register,
+  Login,
+  Movies,
+  NotFoundPage,
+  MovieDetailPage,
+} from "./pages";
 import { BackgroundOverlay } from "./components";
 //layout
 import Layout from "./theme/layout";
@@ -47,6 +53,7 @@ const App = () => {
               <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Navigate to="/movies" />} />
                 <Route path="/movies" element={<Movies />} />
+                <Route path="/movie/:id" element={<MovieDetailPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Route>

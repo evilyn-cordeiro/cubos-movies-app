@@ -98,10 +98,18 @@ export const addOrEditMovie: any = async (
     title,
     originalTitle,
     description,
+    tagline,
     budget,
+    revenue,
+    popularity,
+    voteCount,
+    language,
+    status,
     releaseDate,
     duration,
     genre,
+    youtubeUrl,
+    imageUrl: imageUrlFromBody,
   } = req.body;
 
   const file = req.file;
@@ -111,10 +119,10 @@ export const addOrEditMovie: any = async (
   }
 
   try {
-    let movie;
-
     let imageUrl = null;
+
     if (file) {
+      // Se vier um arquivo (upload manual), sobe no S3
       const uploadResult = await s3
         .upload({
           Bucket: process.env.AWS_BUCKET_NAME!,
@@ -125,42 +133,49 @@ export const addOrEditMovie: any = async (
         .promise();
 
       imageUrl = uploadResult.Location;
+    } else if (imageUrlFromBody) {
+      imageUrl = imageUrlFromBody;
     }
 
+    const profit = Number(revenue) - Number(budget);
+    const successRate = (Number(popularity) * Number(voteCount)) / 1000;
+
+    const movieData = {
+      title,
+      originalTitle,
+      description,
+      tagline,
+      budget: Number(budget),
+      revenue: Number(revenue),
+      popularity: Number(popularity),
+      voteCount: Number(voteCount),
+      language,
+      status,
+      releaseDate: new Date(releaseDate),
+      duration: Number(duration),
+      genre,
+      youtubeUrl,
+      imageUrl,
+      profit,
+      successRate,
+      userId: req.userId,
+    };
+
+    let movie;
     if (id) {
       movie = await prisma.movie.update({
         where: { id: Number(id) },
-        data: {
-          title,
-          originalTitle,
-          description,
-          budget,
-          releaseDate,
-          duration,
-          genre,
-          imageUrl,
-          userId: req.userId, // Associa o filme ao usuário autenticado
-        },
+        data: movieData,
       });
     } else {
       movie = await prisma.movie.create({
-        data: {
-          title,
-          originalTitle,
-          description,
-          budget,
-          releaseDate,
-          duration,
-          genre,
-          imageUrl,
-          userId: req.userId, // Associa o filme ao usuário autenticado
-        },
+        data: movieData,
       });
     }
 
     return res.status(200).json({ message: "Filme salvo com sucesso!", movie });
   } catch (error) {
-    console.error("Erro ao salvar filme:", error); // Log do erro
+    console.error("Erro ao salvar filme:", error);
     return res.status(500).json({ message: "Erro ao salvar filme.", error });
   }
 };
@@ -190,5 +205,35 @@ export const getMovieDetails: any = async (
     return res
       .status(500)
       .json({ message: "Erro ao buscar detalhes do filme.", error });
+  }
+};
+
+export const deleteMovie: any = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Usuário não autenticado." });
+  }
+
+  try {
+    const existingMovie = await prisma.movie.findFirst({
+      where: { id: Number(id), userId },
+    });
+
+    if (!existingMovie) {
+      return res.status(404).json({ message: "Filme não encontrado." });
+    }
+
+    await prisma.movie.delete({
+      where: { id: Number(id) },
+    });
+
+    return res.status(200).json({ message: "Filme deletado com sucesso." });
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao deletar filme.", error });
   }
 };

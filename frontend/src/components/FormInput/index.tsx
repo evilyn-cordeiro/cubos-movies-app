@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 interface FormInputProps {
   label: string;
   placeholder?: string;
-  value: string;
+  value: string | number | unknown;
   type?: string;
   name?: string;
   required?: boolean;
@@ -39,7 +39,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           type={type}
           fullWidth
           inputRef={ref}
-          value={value}
+          value={String(value)}
           onChange={onChange}
           required={required}
           autoComplete={"off"}

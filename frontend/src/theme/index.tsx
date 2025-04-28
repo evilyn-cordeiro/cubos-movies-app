@@ -132,21 +132,21 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#8145B5",
+      main: "#7C3AED",
     },
     secondary: {
-      main: "rgba(183, 68, 247, 0.5)",
+      main: "#a591ff77",
     },
     text: {
-      primary: "#211F26",
-      secondary: "#65636D",
+      primary: "#1D1D1F",
+      secondary: "#6E6E73",
     },
     background: {
-      default: "#EBEAF8",
+      default: "#FAFAFB",
       paper: "#FFFFFF",
     },
     info: {
-      main: "#8E4EC6",
+      main: "#7C3AED",
     },
   },
   typography: {
@@ -156,26 +156,27 @@ export const lightTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "4px",
+          borderRadius: "6px",
           textTransform: "none",
           height: "44px",
+          fontWeight: 500,
         },
         containedPrimary: {
-          backgroundColor: "#8145B5",
+          backgroundColor: "#7C3AED",
           color: "#FFFFFF",
           "&:hover": {
-            backgroundColor: "#52009A",
+            backgroundColor: "#6D28D9",
           },
           "&:disabled": {
-            backgroundColor: "#6F6D78",
-            color: "#ECE9FD",
+            backgroundColor: "#E5E5EA",
+            color: "#A1A1AA",
           },
         },
         outlinedPrimary: {
-          background: "#5C00AD",
-          color: "rgba(241, 221, 255, 98)",
+          borderColor: "#D6BCFA",
+          color: "#7C3AED",
           "&:hover": {
-            backgroundColor: "rgba(183, 68, 247, 0.08)",
+            backgroundColor: "#F5F3FF",
           },
         },
       },
@@ -183,7 +184,7 @@ export const lightTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          color: "#8E4EC6",
+          color: "#7C3AED",
           textDecoration: "none",
           "&:hover": {
             textDecoration: "underline",
@@ -194,11 +195,10 @@ export const lightTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: ({ theme }) => ({
-          borderRadius: 4,
+          borderRadius: 6,
           position: "relative",
-          backgroundColor: "#F2EFF3",
-          border: "1px solid",
-          borderColor: "#E3DFE6",
+          backgroundColor: "#FFFFFF",
+          border: "1px solid #E5E5EA",
           fontSize: 16,
           height: "44px",
           padding: "10px 12px",
@@ -211,18 +211,15 @@ export const lightTheme = createTheme({
             borderColor: theme.palette.primary.main,
           },
           "&.Mui-focused": {
-            boxShadow: `${alpha(
-              theme.palette.primary.main,
-              0.25
-            )} 0 0 0 0.2rem`,
+            boxShadow: `${alpha(theme.palette.primary.main, 0.2)} 0 0 0 2px`,
             borderColor: theme.palette.primary.main,
           },
         }),
         input: {
           fontFamily: "'Inter', sans-serif",
-          color: "#211F26",
+          color: "#1D1D1F",
           "&::placeholder": {
-            color: "#84828E",
+            color: "#A1A1AA",
             opacity: 1,
           },
         },
@@ -231,8 +228,8 @@ export const lightTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: "#232225",
-          fontSize: "18px",
+          color: "#49454F",
+          fontSize: "16px",
           "& .MuiFormLabel-asterisk": {
             color: "#FF0000",
           },
@@ -242,7 +239,7 @@ export const lightTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#EBEAF8",
+          backgroundColor: "#FFFFFF",
         },
       },
     },

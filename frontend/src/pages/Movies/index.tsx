@@ -1,28 +1,7 @@
 import { useState, useEffect } from "react";
 import { AddMovieDrawer } from "../../components/MovieForm";
 import { MovieList } from "../../components";
-
-interface Movie {
-  id: number;
-  title: string;
-  originalTitle: string;
-  description: string;
-  budget: number;
-  releaseDate: string;
-  duration: number;
-  genre: string;
-  imageUrl: string | undefined;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface MoviesResponse {
-  movies: Movie[];
-  totalMovies: number;
-  totalPages: number;
-  currentPage: number;
-}
+import { Movie, MoviesResponse } from "../../utils/moviesInterface";
 
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
