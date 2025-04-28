@@ -12,7 +12,7 @@ interface FormInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
+const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   (
     {
       label,
@@ -58,3 +58,4 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     );
   }
 );
+export default FormInput;

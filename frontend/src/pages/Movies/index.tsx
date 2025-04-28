@@ -1,7 +1,7 @@
 // Movies.tsx
 import { useState, useEffect } from "react";
-import { MovieList } from "../../components/MovieList";
 import { AddMovieDrawer } from "../../components/MovieForm";
+import { MovieList } from "../../components";
 
 interface Movie {
   id: number;

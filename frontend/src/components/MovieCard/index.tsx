@@ -6,7 +6,7 @@ interface MovieCardProps {
   posterUrl?: string;
 }
 
-export const MovieCard = ({ title, genres, posterUrl }: MovieCardProps) => {
+const MovieCard = ({ title, genres, posterUrl }: MovieCardProps) => {
   return (
     <Box
       sx={(theme) => ({
@@ -96,3 +96,4 @@ export const MovieCard = ({ title, genres, posterUrl }: MovieCardProps) => {
     </Box>
   );
 };
+export default MovieCard;

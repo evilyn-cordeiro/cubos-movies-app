@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Link } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { FormInput } from "../../components/FormInput";
+import { FormInput } from "../../components";
 
 const Register = () => {
   const [name, setName] = useState("");

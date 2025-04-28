@@ -2,12 +2,12 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme, lightTheme } from "./theme";
-import { BackgroundOverlay } from "./components/Background";
 import Layout from "./theme/layout";
-import { Register, Login, Movies } from "./pages";
+import { Register, Login, Movies, NotFoundPage } from "./pages";
 import { SnackbarProvider } from "notistack";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import { BackgroundOverlay } from "./components";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
@@ -28,17 +28,21 @@ const App = () => {
         <BrowserRouter>
           <BackgroundOverlay />
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
             <Route
               element={<Layout darkMode={darkMode} setDarkMode={toggleTheme} />}
             >
               <Route element={<PublicRoute restricted={true} />}>
+                <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<NotFoundPage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               <Route element={<PrivateRoute />}>
+                <Route path="/" element={<Navigate to="/movies" />} />
                 <Route path="/movies" element={<Movies />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Route>
           </Routes>

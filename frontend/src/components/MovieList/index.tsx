@@ -1,7 +1,7 @@
-import { Box, Button, Modal, Pagination, InputBase } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useState } from "react";
-import { MovieCard } from "../MovieCard";
+import MovieCard from "../MovieCard";
+import { Box, Button, Modal, Pagination, InputBase } from "@mui/material";
 
 interface Movie {
   id: number;
@@ -27,7 +27,7 @@ interface MovieListProps {
   onAddMovieClick: () => void;
 }
 
-export const MovieList = ({
+const MovieList = ({
   movies,
   search,
   setSearch,
@@ -208,3 +208,4 @@ export const MovieList = ({
     </Box>
   );
 };
+export default MovieList;

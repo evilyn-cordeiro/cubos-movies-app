@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 
-export function BackgroundOverlay() {
+export default function BackgroundOverlay() {
   const theme = useTheme();
 
   useEffect(() => {
