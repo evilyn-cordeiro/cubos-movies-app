@@ -114,7 +114,7 @@ const MovieDetailPage = () => {
               alt={movie.title}
               sx={{
                 width: { md: "374px", xs: "100%" },
-                height: { xl: "150px", md: "582px" },
+                height: { xs: "150px", md: "582px" },
                 objectFit: "cover",
                 borderRadius: 1,
               }}
@@ -166,6 +166,7 @@ const MovieDetailPage = () => {
             <Box display="flex" flexWrap="wrap" gap={2} alignItems="center">
               <Typography
                 variant="body2"
+                textAlign={{ xs: "center", md: "left" }}
                 sx={{ fontStyle: "italic", color: "text.primary", flex: 1 }}
               >
                 {movie.tagline || "Nenhuma tagline inserda."}
@@ -253,7 +254,7 @@ const MovieDetailPage = () => {
                   {
                     title: "SINOPSE",
                     content: (
-                      <Typography textAlign="justify">
+                      <Typography textAlign="justify" minHeight={"212px"}>
                         {movie.description}
                       </Typography>
                     ),
