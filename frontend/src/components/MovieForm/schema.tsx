@@ -1,4 +1,3 @@
-// src/validations/movieSchema.ts
 import * as Yup from "yup";
 
 const movieSchema = Yup.object().shape({

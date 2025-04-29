@@ -1,11 +1,12 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 
 interface MovieCardProps {
   id: number;
   title: string;
   genre: string;
-  popularity?: number;
+  successRate?: number;
   posterUrl?: string;
 }
 
@@ -14,7 +15,7 @@ const MovieCard = ({
   title,
   genre,
   posterUrl,
-  popularity,
+  successRate,
 }: MovieCardProps) => {
   const navigate = useNavigate();
 
@@ -26,8 +27,8 @@ const MovieCard = ({
     <Box
       onClick={handleClick}
       sx={(theme) => ({
-        width: { xs: "100%", sm: "235px" },
-        maxHeight: "355px",
+        width: { xs: "100%", md: "235px" },
+        minHeight: { md: "355px", xs: "281px" },
         position: "relative",
         borderRadius: "4px",
         overflow: "hidden",
@@ -66,7 +67,7 @@ const MovieCard = ({
         }}
       />
 
-      {popularity !== undefined && (
+      {successRate !== undefined && (
         <Box
           className="popularity-hover"
           sx={{
@@ -80,17 +81,16 @@ const MovieCard = ({
             alignItems: "center",
             justifyContent: "center",
             opacity: 0,
-            transition: "opacity 0.3s",
             zIndex: 2,
           }}
         >
           <CircularProgress
             variant="determinate"
-            value={popularity}
-            size={140}
+            value={successRate}
+            size={"140px"}
             thickness={2}
+            color="error"
             sx={{
-              color: "#FFE000",
               background: "rgba(255, 255, 255, 0.1)",
               borderRadius: "50%",
               backdropFilter: "blur(3px)",
@@ -113,7 +113,7 @@ const MovieCard = ({
               component="div"
               sx={{ color: "white", fontWeight: "bold" }}
             >
-              {`${Math.round(popularity)}%`}
+              {`${Math.round(successRate)}%`}
             </Typography>
           </Box>
         </Box>
@@ -138,6 +138,7 @@ const MovieCard = ({
         <Typography
           variant="subtitle1"
           sx={{
+            width: "90%",
             fontWeight: "bold",
             color: "white",
             textTransform: "uppercase",

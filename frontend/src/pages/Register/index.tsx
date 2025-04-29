@@ -1,8 +1,10 @@
+// src/pages/Register.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Link } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { FormInput } from "../../components";
+import { register } from "../../services/userAuthServices";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
@@ -27,26 +29,16 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+      await register(name, email, password);
+      enqueueSnackbar("Cadastro realizado com sucesso!", {
+        variant: "success",
       });
-
-      if (response.ok) {
-        enqueueSnackbar("Cadastro realizado com sucesso!", {
-          variant: "success",
-        });
-        navigate("/login");
-      } else {
-        const errorData = await response.json();
-        enqueueSnackbar(errorData.message || "Erro ao cadastrar", {
-          variant: "error",
-        });
-      }
+      navigate("/login");
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
-      enqueueSnackbar("Erro ao conectar com o servidor.", { variant: "error" });
+      enqueueSnackbar("Erro ao cadastrar", {
+        variant: "error",
+      });
     }
   };
 
@@ -140,7 +132,6 @@ const Register = () => {
           <Link
             href="/login"
             underline="hover"
-            variant="body2"
             textAlign="center"
             sx={{ marginTop: 1 }}
           >

@@ -22,6 +22,7 @@ interface Movie {
   releaseDate: string;
   duration: number;
   genre: string;
+  successRate: number;
   popularity?: number;
   imageUrl?: string;
   userId: number;
@@ -217,7 +218,7 @@ const MovieList = ({
             backgroundColor:
               theme.palette.mode === "dark"
                 ? "rgba(255, 255, 255, 0.08)"
-                : "rgba(101, 101, 101, 0.238)",
+                : "rgba(0, 0, 0, 0.282)",
             borderRadius: "4px",
             mt: 3,
           }}
@@ -233,10 +234,9 @@ const MovieList = ({
             backgroundColor:
               theme.palette.mode === "dark"
                 ? "rgba(255, 255, 255, 0.08)"
-                : "rgba(101, 101, 101, 0.238)",
+                : "rgba(0, 0, 0, 0.282)",
             padding: { sm: "24px", xs: "16px" },
             borderRadius: "4px",
-            minHeight: "500px",
             gridTemplateColumns: "repeat(auto-fill, minmax(235px, 1fr))",
             [theme.breakpoints.down(414)]: {
               gridTemplateColumns: "repeat(auto-fill, minmax(183px, 1fr))",
@@ -249,7 +249,7 @@ const MovieList = ({
               id={movie.id}
               title={movie.title}
               genre={movie.genre}
-              popularity={movie.popularity}
+              successRate={movie.successRate}
               posterUrl={movie.imageUrl}
             />
           ))}

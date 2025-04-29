@@ -27,6 +27,21 @@ export const darkTheme = createTheme({
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
+    h4: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "32px",
+    },
+    h6: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "14px",
+      textDecoration: "uppercase",
+      fontWeight: "bold",
+      color: "#B5B2BC",
+    },
+    body2: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "16px",
+    },
   },
   components: {
     MuiButton: {
@@ -132,51 +147,79 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#7C3AED",
+      main: "#402060",
     },
     secondary: {
-      main: "#a591ff77",
+      main: "#8145B5",
     },
     text: {
-      primary: "#1D1D1F",
-      secondary: "#6E6E73",
+      primary: "#211F26",
+      secondary: "#65636D",
     },
     background: {
-      default: "#FAFAFB",
-      paper: "#FFFFFF",
+      default: "#F2EFF3",
+      paper: "#EAE7EC",
     },
     info: {
-      main: "#7C3AED",
+      main: "#8E4EC6",
     },
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
+    h4: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "32px",
+      color: "#65636D",
+    },
+    h5: {
+      color: "#211F26",
+    },
+    h6: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "14px",
+      textTransform: "uppercase",
+      fontWeight: "bold",
+      color: "#E3DFE6",
+    },
+    body2: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: "16px",
+    },
   },
   components: {
+    MuiIcon: {
+      styleOverrides: {
+        colorPrimary: "pink",
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "6px",
+          borderRadius: "4px",
           textTransform: "none",
           height: "44px",
-          fontWeight: 500,
         },
         containedPrimary: {
-          backgroundColor: "#7C3AED",
+          backgroundColor: "#8E4EC6",
           color: "#FFFFFF",
           "&:hover": {
-            backgroundColor: "#6D28D9",
+            background: "#9A5CD0",
           },
           "&:disabled": {
-            backgroundColor: "#E5E5EA",
-            color: "#A1A1AA",
+            backgroundColor: "#E0DEF1",
+            color: "#A8A3B8",
           },
         },
         outlinedPrimary: {
-          borderColor: "#D6BCFA",
-          color: "#7C3AED",
+          borderColor: "rgba(183, 68, 247, 0.5)",
+          color: "#8E4EC6",
           "&:hover": {
-            backgroundColor: "#F5F3FF",
+            backgroundColor: "rgba(183, 68, 247, 0.08)",
+          },
+          "&:disabled": {
+            borderColor: "#DDD9EC",
+            color: "#B0AEC0",
+            background: "#F7F6FB",
           },
         },
       },
@@ -184,7 +227,7 @@ export const lightTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          color: "#7C3AED",
+          color: "#8E4EC6",
           textDecoration: "none",
           "&:hover": {
             textDecoration: "underline",
@@ -195,10 +238,10 @@ export const lightTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: ({ theme }) => ({
-          borderRadius: 6,
+          borderRadius: 4,
           position: "relative",
           backgroundColor: "#FFFFFF",
-          border: "1px solid #E5E5EA",
+          border: "1px solid #D0CED5",
           fontSize: 16,
           height: "44px",
           padding: "10px 12px",
@@ -211,7 +254,7 @@ export const lightTheme = createTheme({
             borderColor: theme.palette.primary.main,
           },
           "&.Mui-focused": {
-            boxShadow: `${alpha(theme.palette.primary.main, 0.2)} 0 0 0 2px`,
+            boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
             borderColor: theme.palette.primary.main,
           },
         }),
@@ -229,7 +272,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           color: "#49454F",
-          fontSize: "16px",
+          fontSize: "18px",
           "& .MuiFormLabel-asterisk": {
             color: "#FF0000",
           },

@@ -1,5 +1,4 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,11 +8,12 @@ import movieSchema from "./schema";
 import { EditFormMovie, MovieFormData } from "../../utils/moviesInterface";
 import { useEffect } from "react";
 import { addMovie, editMovie } from "../../services/movieServices";
+import Close from "../Icons/Close";
 
 interface AddMovieDrawerProps {
   open: boolean;
   movieToEdit?: MovieFormData | null;
-  movieId: number;
+  movieId?: number;
   onClose: () => void;
   onMovieAdded: () => void;
 }
@@ -137,8 +137,8 @@ export const AddMovieDrawer = ({
           >
             <Box display="flex" justifyContent="space-between" mb={2}>
               <Typography variant="h5">Adicionar Filme</Typography>
-              <IconButton onClick={handleClose}>
-                <CloseIcon />
+              <IconButton onClick={handleClose} color="primary">
+                <Close />
               </IconButton>
             </Box>
 

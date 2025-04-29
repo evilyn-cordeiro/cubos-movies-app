@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Link } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { FormInput } from "../../components";
+import { login } from "../../services/userAuthServices";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,26 +15,15 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.token);
-        enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
-        navigate("/movies");
-      } else {
-        const errorData = await response.json();
-        enqueueSnackbar(errorData.message || "Credenciais inválidas", {
-          variant: "error",
-        });
-      }
+      const data = await login(email, password);
+      localStorage.setItem("token", data.token);
+      enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
+      navigate("/movies");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      enqueueSnackbar("Erro ao conectar com o servidor.", { variant: "error" });
+      enqueueSnackbar("Erro ao conectar com o servidor.", {
+        variant: "error",
+      });
     }
   };
 
@@ -96,7 +86,7 @@ const Login = () => {
               marginTop: "28px",
             }}
           >
-            <Link href="/forgot-password" underline="hover" variant="body2">
+            <Link href="/forgot-password" underline="hover">
               Esqueci minha senha
             </Link>
 

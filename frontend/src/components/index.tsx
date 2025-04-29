@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import Movie from "./MovieCard";
 import NotFile from "./NotFile";
 import FormSelect from "./FormSelect";
+import RemoveDialog from "./RemoveDialog";
 
 export {
   BackgroundOverlay,
@@ -20,4 +21,5 @@ export {
   NotFile,
   Movie,
   FormSelect,
+  RemoveDialog,
 };
