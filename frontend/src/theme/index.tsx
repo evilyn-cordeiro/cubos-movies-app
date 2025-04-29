@@ -160,9 +160,6 @@ export const lightTheme = createTheme({
       default: "#F2EFF3",
       paper: "#EAE7EC",
     },
-    info: {
-      main: "#8E4EC6",
-    },
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
@@ -200,10 +197,10 @@ export const lightTheme = createTheme({
           height: "44px",
         },
         containedPrimary: {
-          backgroundColor: "#8E4EC6",
+          backgroundColor: "#402060",
           color: "#FFFFFF",
           "&:hover": {
-            background: "#9A5CD0",
+            background: "#25004570",
           },
           "&:disabled": {
             backgroundColor: "#E0DEF1",
@@ -212,7 +209,7 @@ export const lightTheme = createTheme({
         },
         outlinedPrimary: {
           borderColor: "rgba(183, 68, 247, 0.5)",
-          color: "#8E4EC6",
+          color: "rgba(183, 68, 247, 0.5)",
           "&:hover": {
             backgroundColor: "rgba(183, 68, 247, 0.08)",
           },

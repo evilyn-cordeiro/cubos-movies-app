@@ -40,7 +40,7 @@ export interface MovieFormData {
 }
 
 export interface EditFormMovie extends MovieFormData {
-  id: number;
+  id?: number;
 }
 
 export interface MoviesResponse {

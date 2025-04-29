@@ -4,15 +4,12 @@ Este projeto é um sistema responsivo para exibição de detalhes de filmes, con
 
 ## 📸 Demonstração
 
-![alt text](image.png)
-
 ![image](https://github.com/user-attachments/assets/09d21f0b-f14b-4796-8fc3-6a24aa4c760e)
-
 
 ## 🚀 Tecnologias Utilizadas
 
 - [React]
-- [Material UI (MUI)
+- [Material UI (MUI)]
 - [TypeScript]
 - [Vite]
 - [Node.Js]

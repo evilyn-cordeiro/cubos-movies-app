@@ -15,16 +15,16 @@ const Close = () => {
         <path
           d="M18 6L6 18"
           stroke={theme.palette.text.primary}
-          stroke-width="2"
-          stroke-linecap="square"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
         <path
           d="M6 6L18 18"
           stroke={theme.palette.text.primary}
-          stroke-width="2"
-          stroke-linecap="square"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
       </svg>
     </SvgIcon>

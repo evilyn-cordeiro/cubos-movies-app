@@ -4,9 +4,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AddMovieDrawer } from "../../components/MovieForm";
 import { EditFormMovie } from "../../utils/moviesInterface";
-import { deleteMovieById, fetchMovieById } from "../../services/movieServices";
 import RemoveDialog from "../../components/RemoveDialog";
 import InfoCard from "../../components/InfoCard";
+import { enqueueSnackbar } from "notistack";
+import { movieService } from "../../services/movieServices";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const MovieDetailPage = () => {
 
   const fetchMovie = async () => {
     try {
-      const data = await fetchMovieById(id!);
+      const data = await movieService.fetchMovieById(id!);
       setMovie(data);
     } catch (err) {
       console.error(err);
@@ -35,11 +36,19 @@ const MovieDetailPage = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteMovieById(id!);
+      await movieService.deleteMovieById(id!);
       setDeleteDialogOpen(false);
+      enqueueSnackbar("Filme deletado!", {
+        variant: "success",
+      });
       navigate("/");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      enqueueSnackbar(
+        `${error}: Erro ao deletar Filme. Tente novamente mais tarte`,
+        {
+          variant: "error",
+        }
+      );
     }
   };
 
@@ -104,8 +113,8 @@ const MovieDetailPage = () => {
               src={movie.imageUrl || "src/assets/movie-default.png"}
               alt={movie.title}
               sx={{
-                width: { md: 374 },
-                height: { xs: "auto", md: 582 },
+                width: { md: "374px", xs: "100%" },
+                height: { xl: "150px", md: "582px" },
                 objectFit: "cover",
                 borderRadius: 1,
               }}
@@ -129,9 +138,8 @@ const MovieDetailPage = () => {
               </Box>
               <Box
                 display="flex"
-                gap={2}
+                gap={1}
                 justifyContent={{ xs: "center", md: "flex-end" }}
-                flexWrap="wrap"
               >
                 <Button
                   variant="outlined"
@@ -144,7 +152,7 @@ const MovieDetailPage = () => {
                   variant="contained"
                   sx={{
                     width: { xs: "100%", md: 82 },
-                    maxWidth: 283,
+                    maxWidth: "283px",
                     height: 44,
                   }}
                   onClick={() => setIsEditing(true)}
@@ -160,7 +168,7 @@ const MovieDetailPage = () => {
                 variant="body2"
                 sx={{ fontStyle: "italic", color: "text.primary", flex: 1 }}
               >
-                {movie.tagline || "N/A"}
+                {movie.tagline || "Nenhuma tagline inserda."}
               </Typography>
 
               {[

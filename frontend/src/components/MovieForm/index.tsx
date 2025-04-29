@@ -7,8 +7,8 @@ import { useSnackbar } from "notistack";
 import movieSchema from "./schema";
 import { EditFormMovie, MovieFormData } from "../../utils/moviesInterface";
 import { useEffect } from "react";
-import { addMovie, editMovie } from "../../services/movieServices";
 import Close from "../Icons/Close";
+import { movieService } from "../../services/movieServices";
 
 interface AddMovieDrawerProps {
   open: boolean;
@@ -68,12 +68,12 @@ export const AddMovieDrawer = ({
 
     try {
       if (movieToEdit && movieId) {
-        await editMovie(editData);
+        await movieService.editMovie(editData);
         enqueueSnackbar("Filme atualizado com sucesso!", {
           variant: "success",
         });
       } else {
-        await addMovie(data);
+        await movieService.addMovie(data);
         enqueueSnackbar("Filme adicionado com sucesso!", {
           variant: "success",
         });
@@ -127,7 +127,7 @@ export const AddMovieDrawer = ({
             top={0}
             right={0}
             height="100vh"
-            width={{ sm: "600px" }}
+            width={{ sm: "500px" }}
             bgcolor="background.paper"
             zIndex={1300}
             display="flex"

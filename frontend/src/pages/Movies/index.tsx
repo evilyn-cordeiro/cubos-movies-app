@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { AddMovieDrawer } from "../../components/MovieForm";
 import { MovieList } from "../../components";
-import { Movie, MoviesResponse } from "../../utils/moviesInterface";
+import { Movie } from "../../utils/moviesInterface";
+import { movieService } from "../../services/movieServices";
 
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -27,31 +28,12 @@ const Movies = () => {
     searchQuery: string,
     appliedFilters = filters
   ) => {
-    const token = localStorage.getItem("token");
-
-    const params = new URLSearchParams({
-      page: pageNumber.toString(),
-      search: searchQuery,
-      minDuration: appliedFilters.minDuration,
-      maxDuration: appliedFilters.maxDuration,
-      startDate: appliedFilters.startDate,
-      endDate: appliedFilters.endDate,
-    });
-
     try {
-      const response = await fetch(`http://localhost:3000/movies?${params}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-        return;
-      }
-
-      const data: MoviesResponse = await response.json();
+      const data = await movieService.fetchMovies(
+        pageNumber,
+        searchQuery,
+        appliedFilters
+      );
       setMovies(data.movies);
       setTotalPages(data.totalPages);
     } catch (error) {

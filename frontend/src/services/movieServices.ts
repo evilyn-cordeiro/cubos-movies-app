@@ -1,65 +1,73 @@
 import axios from "axios";
 import { EditFormMovie, MovieFormData } from "../utils/moviesInterface";
 
-const BASE_URL = "http://localhost:3000";
+const api = axios.create({
+  baseURL: "http://localhost:3000",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-export const addMovie = async (data: MovieFormData) => {
+// Adiciona o token em todas as requisições automaticamente
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-
-  const response = await axios.post(`${BASE_URL}/movies`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-};
-
-export const editMovie = async (data: EditFormMovie) => {
-  const token = localStorage.getItem("token");
-
-  const response = await axios.post(`${BASE_URL}/movies/`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-};
-
-export const fetchMovieById = async (id: string): Promise<EditFormMovie> => {
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`${BASE_URL}/movies/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (response.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-    throw new Error("Não autorizado");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
+  return config;
+});
 
-  if (!response.ok) {
-    throw new Error("Erro ao buscar filme");
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
   }
+);
 
-  return await response.json();
-};
+export const movieService = {
+  addMovie: async (data: MovieFormData) => {
+    const response = await api.post("/movies", data);
+    return response.data;
+  },
 
-export const deleteMovieById = async (id: string): Promise<void> => {
-  const token = localStorage.getItem("token");
+  editMovie: async (data: EditFormMovie) => {
+    const response = await api.post("/movies", data);
+    return response.data;
+  },
 
-  const response = await fetch(`${BASE_URL}/movies/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  fetchMovieById: async (id: string): Promise<EditFormMovie> => {
+    const response = await api.get(`/movies/${id}`);
+    return response.data;
+  },
 
-  if (!response.ok) {
-    throw new Error("Erro ao deletar filme");
-  }
+  deleteMovieById: async (id: string): Promise<void> => {
+    await api.delete(`/movies/${id}`);
+  },
+
+  fetchMovies: async (
+    pageNumber: number,
+    searchQuery: string,
+    appliedFilters: {
+      minDuration: string;
+      maxDuration: string;
+      startDate: string;
+      endDate: string;
+    }
+  ) => {
+    const params = {
+      page: pageNumber.toString(),
+      search: searchQuery,
+      minDuration: appliedFilters.minDuration,
+      maxDuration: appliedFilters.maxDuration,
+      startDate: appliedFilters.startDate,
+      endDate: appliedFilters.endDate,
+    };
+
+    const response = await api.get("/movies", { params });
+    return response.data;
+  },
 };
