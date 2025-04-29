@@ -1,10 +1,10 @@
-# 🎬 Movie Details App
+# 🎬 Cubo Movies App
 
 Este projeto é um sistema responsivo para exibição de detalhes de filmes, construído com **React**. Ele apresenta informações como sinopse, gêneros, duração, idioma, lançamento, orçamento, receita e muito mais, com foco em uma interface amigável e adaptável para diferentes tamanhos de tela.
 
 ## 📸 Demonstração
 
-![Movie Details Screenshot](![alt text](image.png)) <!-- atualize com o caminho correto, se houver -->
+(![alt text](image.png))
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -15,6 +15,7 @@ Este projeto é um sistema responsivo para exibição de detalhes de filmes, con
 
 ## 📂 Estrutura do Projeto
 
+```plaintext
 src/
 ├── components/
 │ └── InfoCard.tsx
@@ -25,11 +26,13 @@ src/
 │ └── movie-default.png
 ├── App.tsx └── main.tsx
 
+```
+
 ## 📦 Instalação
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/movie-details-app.git
+git clone https://github.com/evilyn-cordeiro/cubos-movies-app.git
 
 # Acesse o diretório
 cd movie-details-app
