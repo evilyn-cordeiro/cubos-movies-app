@@ -36,7 +36,7 @@ const Register = () => {
       navigate("/login");
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
-      enqueueSnackbar("Erro ao cadastrar", {
+      enqueueSnackbar(`${error}`, {
         variant: "error",
       });
     }

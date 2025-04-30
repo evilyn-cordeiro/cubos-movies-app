@@ -20,8 +20,7 @@ const Login = () => {
       enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
       navigate("/movies");
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      enqueueSnackbar("Erro ao conectar com o servidor.", {
+      enqueueSnackbar(`${error}`, {
         variant: "error",
       });
     }
