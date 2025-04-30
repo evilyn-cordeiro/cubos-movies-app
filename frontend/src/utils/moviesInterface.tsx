@@ -4,7 +4,7 @@ export interface Movie {
   originalTitle: string;
   description: string;
   budget: number;
-  releaseDate: string;
+  releaseDate: string | Date;
   duration: number;
   genre: string;
   status: string;
@@ -18,7 +18,7 @@ export interface Movie {
   createdAt: string;
   language: string;
   successRate: number;
-  updatedAt: string;
+  updatedAt: string | Date;
 }
 
 export interface MovieFormData {

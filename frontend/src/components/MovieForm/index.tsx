@@ -424,7 +424,7 @@ export const AddMovieDrawer = ({
                     render={({ field }) => (
                       <FormInput
                         label="URL da Imagem"
-                        placeholder={"URL da capa do filme"}
+                        placeholder={"URL da capa do Filme"}
                         name={field.name}
                         value={field.value ?? ""}
                         onChange={field.onChange}

@@ -19,7 +19,7 @@ interface Movie {
   originalTitle: string;
   description: string;
   budget: number;
-  releaseDate: string;
+  releaseDate: string | Date;
   duration: number;
   genre: string;
   successRate: number;
