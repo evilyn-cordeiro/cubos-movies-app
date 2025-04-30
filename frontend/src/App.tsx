@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
-//notistack(notification)
+import { useEffect, useMemo, useState } from "react";
 import { SnackbarProvider } from "notistack";
-//routes
+
+// Routes
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
-//pages
+
+// Pages
 import {
   Register,
   Login,
@@ -13,20 +14,33 @@ import {
   NotFoundPage,
   MovieDetailPage,
 } from "./pages";
-//layout
+
+// Layout
 import Layout from "./theme/layout";
 import { darkTheme, lightTheme } from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [mode, setMode] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme") as "light" | "dark";
+    if (stored) setMode(stored);
+  }, []);
 
   const toggleTheme = () => {
-    setDarkMode((prev) => !prev);
+    const newMode = mode === "light" ? "dark" : "light";
+    setMode(newMode);
+    localStorage.setItem("theme", newMode);
   };
 
+  const theme = useMemo(
+    () => (mode === "dark" ? darkTheme : lightTheme),
+    [mode]
+  );
+
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={theme}>
       <SnackbarProvider
         maxSnack={3}
         autoHideDuration={2000}
@@ -38,7 +52,9 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route
-              element={<Layout darkMode={darkMode} setDarkMode={toggleTheme} />}
+              element={
+                <Layout darkMode={mode === "dark"} setDarkMode={toggleTheme} />
+              }
             >
               <Route element={<PublicRoute restricted={true} />}>
                 <Route path="/" element={<Navigate to="/login" />} />

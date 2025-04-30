@@ -390,6 +390,7 @@ export const AddMovieDrawer = ({
                       render={({ field }) => (
                         <FormInput
                           label="Gêneros"
+                          placeholder={"Ex: Animação, Ação"}
                           name={field.name}
                           value={field.value ?? []}
                           onChange={field.onChange}
@@ -423,6 +424,7 @@ export const AddMovieDrawer = ({
                     render={({ field }) => (
                       <FormInput
                         label="URL da Imagem"
+                        placeholder={"URL da capa do filme"}
                         name={field.name}
                         value={field.value ?? ""}
                         onChange={field.onChange}
