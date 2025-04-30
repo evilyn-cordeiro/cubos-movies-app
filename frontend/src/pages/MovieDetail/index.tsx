@@ -74,7 +74,6 @@ const MovieDetailPage = () => {
     <Box
       sx={{
         mt: 10,
-        minHeight: "80vh",
         width: "100%",
         maxWidth: "1366px",
         padding: "16px",
@@ -113,8 +112,8 @@ const MovieDetailPage = () => {
               src={movie.imageUrl || "src/assets/movie-default.png"}
               alt={movie.title}
               sx={{
-                width: { md: "374px", xs: "100%" },
-                height: { xs: "150px", md: "582px" },
+                width: { md: "374px", xs: "382px" },
+                height: "582px",
                 objectFit: "cover",
                 borderRadius: 1,
               }}
@@ -131,7 +130,9 @@ const MovieDetailPage = () => {
               gap={2}
             >
               <Box textAlign={{ xs: "center", md: "start" }}>
-                <Typography variant="h4">{movie.title}</Typography>
+                <Typography variant="h4" fontWeight={600}>
+                  {movie.title}
+                </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
                   Título Original: {movie.originalTitle}
                 </Typography>
@@ -208,10 +209,13 @@ const MovieDetailPage = () => {
                   variant="determinate"
                   value={movie.popularity}
                   size="100%"
-                  thickness={2}
+                  thickness={3}
                   sx={{
                     background: "rgba(255, 255, 255, 0.1)",
                     borderRadius: "50%",
+                    "& .MuiCircularProgress-circle": {
+                      stroke: "#FFE000",
+                    },
                   }}
                 />
                 <Box
@@ -227,7 +231,7 @@ const MovieDetailPage = () => {
                   <Typography
                     variant="h6"
                     fontSize={{ xs: "0.75rem", sm: "1rem", md: "1.25rem" }}
-                    color="white"
+                    color="#FFE000"
                     fontWeight="bold"
                   >
                     {`${Math.round(movie.popularity || 0)}%`}

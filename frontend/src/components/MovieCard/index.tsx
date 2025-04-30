@@ -88,12 +88,15 @@ const MovieCard = ({
             variant="determinate"
             value={successRate}
             size={"140px"}
-            thickness={2}
+            thickness={3}
             color="error"
             sx={{
               background: "rgba(255, 255, 255, 0.1)",
               borderRadius: "50%",
               backdropFilter: "blur(3px)",
+              "& .MuiCircularProgress-circle": {
+                stroke: "#FFE000",
+              },
             }}
           />
           <Box

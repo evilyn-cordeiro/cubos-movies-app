@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { BackgroundOverlay } from "../components";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -12,6 +13,7 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+      <BackgroundOverlay />
       <Box
         flexGrow={1}
         display="flex"

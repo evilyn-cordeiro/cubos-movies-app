@@ -13,7 +13,6 @@ import {
   NotFoundPage,
   MovieDetailPage,
 } from "./pages";
-import { BackgroundOverlay } from "./components";
 //layout
 import Layout from "./theme/layout";
 import { darkTheme, lightTheme } from "./theme";
@@ -37,7 +36,6 @@ const App = () => {
         }}
       >
         <BrowserRouter>
-          <BackgroundOverlay />
           <Routes>
             <Route
               element={<Layout darkMode={darkMode} setDarkMode={toggleTheme} />}
