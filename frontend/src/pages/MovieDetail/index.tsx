@@ -82,18 +82,36 @@ const MovieDetailPage = () => {
     >
       <Box
         sx={{
+          position: "relative",
           borderRadius: 2,
           padding: 2,
           minHeight: "400px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          backgroundColor:
-            theme.palette.mode === "dark"
-              ? "rgba(255, 255, 255, 0.08)"
-              : "rgba(0, 0, 0, 0.282)",
+          overflow: "hidden",
+          zIndex: 99,
+          color: "white",
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: -2,
+            backgroundImage: `linear-gradient(
+        to bottom right,
+        rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.5)
+      ), url(${movie.imageUrl || "src/assets/movie-default.png"})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.7,
+          }}
+        />
         <Box
           display="flex"
           flexDirection={{ xs: "column", md: "row" }}
