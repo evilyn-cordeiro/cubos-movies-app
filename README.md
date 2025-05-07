@@ -1,4 +1,4 @@
-# 🎬 Cubo Movies App
+# 🎬 Movies App
 
 Este projeto é um sistema responsivo para exibição de detalhes de filmes, construído com **React**. Ele apresenta informações como sinopse, gêneros, duração, idioma, lançamento, orçamento, receita e muito mais, com foco em uma interface amigável e adaptável para diferentes tamanhos de tela.
 
